@@ -38,6 +38,9 @@ namespace MFlight.Demo
         public float Yaw { set { yaw = Mathf.Clamp(value, -1f, 1f); } get { return yaw; } }
         public float Roll { set { roll = Mathf.Clamp(value, -1f, 1f); } get { return roll; } }
 
+        public float throttleLerpSpeed = 50f;
+        public float maxThrust = 150f;
+
         private Rigidbody rigid;
 
         private bool rollOverride = false;
@@ -72,6 +75,17 @@ namespace MFlight.Demo
             }
 
             //todo zmiana predkosci getaxis("Throttle) - przepustnica by zmienialo predkosc od np 100 do 0
+            float throttleChange = Input.GetAxis("Throttle");
+            
+            if(throttleChange < 0f)
+            {
+                thrust = Mathf.Lerp(thrust, 0, throttleLerpSpeed * Time.deltaTime);
+                
+            }
+            else if(throttleChange > 0f)
+            {
+                thrust = Mathf.Lerp(thrust, maxThrust, throttleLerpSpeed * Time.deltaTime);
+            }
 
 
             // Calculate the autopilot stick inputs.
