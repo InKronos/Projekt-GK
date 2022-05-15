@@ -32,7 +32,7 @@ public class LaserFire : MonoBehaviour
                 lasers[i].SetActive(true);
             }
 
-            if (Physics.Raycast(RayCastOrignPoint.position, RayCastTarget, out hit, laserRange))
+            if (Physics.Raycast(RayCastOrignPoint.position, RayCastTarget, out hit, laserRange, 3))
             {
                 for (int i = 0; i < laserLineRenderers.Length; i++)
                 {
@@ -40,9 +40,9 @@ public class LaserFire : MonoBehaviour
                     laserLineRenderers[i].SetPosition(1, hit.point);
                 }
 
-                if(hit.transform.gameObject.GetComponent<Fracture>())
+                if(hit.transform.gameObject.GetComponent<Asteroid>())
                 {
-                    hit.transform.gameObject.GetComponent<Fracture>().FractureObject();
+                    hit.transform.gameObject.GetComponent<Asteroid>().Explode();
                 }
             }
             else
