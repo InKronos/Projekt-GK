@@ -3,6 +3,7 @@ using UnityEngine;
 public class SmallTankMove  : Enemy
 {
 
+    public Rigidbody rb;
     public float speed = 100000.0f;
     private Transform target;
     private int waypointId = 0;
@@ -12,9 +13,14 @@ public class SmallTankMove  : Enemy
     // Start is called before the first frame update
     void Start()
     {
+        rb = this.GetComponent<Rigidbody>();
         bodyHealth = 100;
         shieldHealth = 0;
         target = WayPoints.points[0];
+        rb.mass = 1000f;
+        transform.Translate(target.position - transform.position);
+
+
     }
 
     // Update is called once per frame
@@ -24,52 +30,59 @@ public class SmallTankMove  : Enemy
         
         float dist = Vector3.Distance(transform.position, target.position);
 
-        if (Vector3.Angle(transform.forward, dir) > 30f && !rotate)
+        if (Vector3.Angle(transform.forward, dir) > 40f && !rotate && dist > 7f)
         {
             Debug.Log("You spin me right 'round, baby, right 'round");
             angleBetween = Vector3.Angle(transform.forward, dir);
             rotate = true;
         }
-        else if (Vector3.Angle(transform.forward, dir) <5f)
+        else if (Vector3.Angle(transform.forward, dir) < 30f)
         {
             Debug.Log("Koniec");
             rotate = false;
             rotationpercent = 0f;
+            rb.angularVelocity = new Vector3(0f, 0f, 0f);
         }
-        if(rotate)
-        { 
-            Debug.Log(angleBetween);
-            /*transform.Rotate(new Vector3(0, -1, 0) * Time.deltaTime * 10*speed, Space.World);*/
 
-            Quaternion rotation = Quaternion.LookRotation(dir, Vector3.up);
+        if (rotate)
+        { 
+            Debug.Log(Vector3.Angle(transform.forward, dir));
+            rb.velocity = new Vector3(0f, 0f, 0f);
+            rb.angularVelocity = new Vector3(0f, 1f, 0f);
+            /*Quaternion rotation = Quaternion.LookRotation(dir, Vector3.up);
             rotation = Quaternion.Lerp(transform.rotation, rotation, rotationpercent);
             rotationpercent += 0.5f* Time.deltaTime;
-            transform.rotation = rotation;
-            transform.Translate(transform.forward.normalized * speed / 4 * Time.deltaTime, Space.World);
+            transform.rotation = rotation;*/
+            rb.velocity =(transform.forward.normalized * speed / 2);
         }
         else
         {
-           
-            
-            transform.Translate(transform.forward.normalized * speed * Time.deltaTime, Space.World);
+
+            rb.angularVelocity = new Vector3(0f, 0f, 0f);
+            rb.velocity = (transform.forward.normalized * speed)+ new Vector3(0f, -0.1f, 0f);
         }
-        if(dist < 1f)
+        if(dist < 40f)
         {
              
             GetNextWaypoint();
+            
         }
+
+        
     }
     void GetNextWaypoint()
     {
         if (waypointId < WayPoints.points.Length)
         {
-            waypointId++;
+            
             target = WayPoints.points[waypointId]; 
+            waypointId++;
         }
         else if (waypointId < 2* WayPoints.points.Length)
         {
+            
+            target = WayPoints.points[2 * WayPoints.points.Length-waypointId-1];
             waypointId++;
-            target = WayPoints.points[2 * WayPoints.points.Length-waypointId];
         }
         else
         {
