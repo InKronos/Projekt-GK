@@ -47,8 +47,12 @@ public class LaserFire : MonoBehaviour
         if(!canFire)
         {
             if (Time.time > nextFireTime)
+            {
                 canFire = true;
-            heat = 0;
+                heat = 0;
+                laserLineRenderers[0].enabled = true;
+                laserLineRenderers[1].enabled = true;
+            }
         }
 
         if(increaseHeat)
@@ -58,12 +62,14 @@ public class LaserFire : MonoBehaviour
             {
                 canFire = false;
                 nextFireTime = Time.time + overHeatCoolDown;
+                laserLineRenderers[0].enabled = false;
+                laserLineRenderers[1].enabled = false;
+                this.gameObject.GetComponent<PlayerAudio>().Play("Overcharge");
             }
 
         }
         else
         {
-            if(!canFire)
             heat = Mathf.Lerp(heat, 0, heatTick * Time.deltaTime);
         }
         heatImage.fillAmount = heat / maxHeat;
