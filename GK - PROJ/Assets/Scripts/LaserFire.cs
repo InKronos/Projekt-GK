@@ -1,10 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using MFlight;
 
 public class LaserFire : MonoBehaviour
 {
+    //remove a lot of publics after testing
+
+    public Image heatImage;
+
+    public float overHeatCoolDown = 5f;
+    private float nextFireTime = 0f;
+    public bool canFire = true;
+
+    public float heat = 0f;
+    public float maxHeat = 150f;
+    public float heatTick = 10f;
+    public float heatCoolDown = 5f;
+    public float heatTickDelay = 1f;
+    private float nextHeatTickTime = 0f;
+    public bool increaseHeat = true;
+
+
+
     public GameObject[] lasers; //Parent laser gameObjects
     public LineRenderer[] laserLineRenderers; //Laser Linerenders
     public float laserRange = 50f;
@@ -19,14 +38,45 @@ public class LaserFire : MonoBehaviour
         }
     }
 
+
+
+
     // Update is called once per frame
     void Update()
     {
+        if(!canFire)
+        {
+            if (Time.time > nextFireTime)
+                canFire = true;
+            heat = 0;
+        }
+
+        if(increaseHeat)
+        {
+           heat = Mathf.Lerp(heat, maxHeat + 20, heatTick * Time.deltaTime);
+           if(heat > maxHeat)
+            {
+                canFire = false;
+                nextFireTime = Time.time + overHeatCoolDown;
+            }
+
+        }
+        else
+        {
+            if(!canFire)
+            heat = Mathf.Lerp(heat, 0, heatTick * Time.deltaTime);
+        }
+        heatImage.fillAmount = heat / maxHeat;
         RaycastHit hit;
         Vector3 RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
 
-        if(Input.GetButton("Fire1"))
+        if(Input.GetButton("Fire1") && canFire)
         {
+            if (Time.time > nextHeatTickTime)
+            {
+                increaseHeat = true;
+                nextHeatTickTime = Time.time + heatTickDelay;
+            }
             for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].SetActive(true);
@@ -53,14 +103,25 @@ public class LaserFire : MonoBehaviour
                     laserLineRenderers[i].SetPosition(1, RayCastTarget);               
                 }
             }
-        } 
+        }
+        else
+        {
+             if (Time.time > nextHeatTickTime)
+             {
+                increaseHeat = false;
+                nextHeatTickTime = Time.time + heatTickDelay;
+            }
+        }
 
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetButtonUp("Fire1") && canFire)
         {
             for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].gameObject.SetActive(false);
             }
         }
+
+
+      
     }
 }

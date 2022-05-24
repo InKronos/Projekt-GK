@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\PlaneController.cs" />
+    <Compile Include="Assets\FlipNormals.cs" />
     <Compile Include="Assets\Scripts\LimitedLifetime.cs" />
     <Compile Include="Assets\Scripts\DroneController.cs" />
     <Compile Include="Assets\MouseFlight\Demo\Scripts\Plane.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Assets\Asteroids Pack\Assets\Scripts\RandomRotator.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\MouseFlight\Scripts\MouseFlightController.cs" />
-    <Compile Include="Assets\FlipNormals.cs" />
+    <Compile Include="Assets\Scripts\BounceOff.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
