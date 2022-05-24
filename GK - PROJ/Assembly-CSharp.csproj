@@ -58,17 +58,20 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\LaserFire.cs" />
     <Compile Include="Assets\MouseFlight\Demo\Scripts\Hud.cs" />
+    <Compile Include="Assets\Scripts\Fracture.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Asteroid.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\PlaneController.cs" />
     <Compile Include="Assets\Scripts\LimitedLifetime.cs" />
     <Compile Include="Assets\Scripts\DroneController.cs" />
     <Compile Include="Assets\MouseFlight\Demo\Scripts\Plane.cs" />
+    <Compile Include="Assets\MouseFlight\Demo\Scripts\Turret.cs" />
     <Compile Include="Assets\Asteroids Pack\Assets\Scripts\RandomRotator.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\MouseFlight\Scripts\MouseFlightController.cs" />
+    <Compile Include="Assets\FlipNormals.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -79,6 +82,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\DeepSpaceSkyboxPack\GalaxyFire\Galaxy Fire Skybox Readme.txt" />
     <None Include="Assets\Sci_fi_Drones\Read me.txt" />
+    <None Include="Assets\tower-defense-assets\README.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\DeepSpaceSkyboxPack\DiverseSpace\Diverse Space Skybox Readme.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
