@@ -21,6 +21,7 @@ public class LaserFire : MonoBehaviour
     public float heatTickDelay = 1f;
     private float nextHeatTickTime = 0f;
     public bool increaseHeat = true;
+    private bool firing = false;
 
 
 
@@ -60,11 +61,17 @@ public class LaserFire : MonoBehaviour
            heat = Mathf.Lerp(heat, maxHeat + 20, heatTick * Time.deltaTime);
            if(heat > maxHeat)
             {
+                if (canFire)
+                {
+                    firing = false;
+                    this.gameObject.GetComponent<PlayerAudio>().Stop("Beam");
+                    this.gameObject.GetComponent<PlayerAudio>().Play("Overcharge");
+                }
                 canFire = false;
                 nextFireTime = Time.time + overHeatCoolDown;
                 laserLineRenderers[0].enabled = false;
                 laserLineRenderers[1].enabled = false;
-                this.gameObject.GetComponent<PlayerAudio>().Play("Overcharge");
+                
             }
 
         }
@@ -78,6 +85,10 @@ public class LaserFire : MonoBehaviour
 
         if(Input.GetButton("Fire1") && canFire)
         {
+            if(!firing)
+                this.gameObject.GetComponent<PlayerAudio>().Play("Beam");
+            firing = true;
+
             if (Time.time > nextHeatTickTime)
             {
                 increaseHeat = true;
@@ -125,8 +136,10 @@ public class LaserFire : MonoBehaviour
             {
                 lasers[i].gameObject.SetActive(false);
             }
+            firing = false;
+            this.gameObject.GetComponent<PlayerAudio>().Stop("Beam");
         }
-
+        
 
       
     }
