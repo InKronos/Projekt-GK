@@ -9,7 +9,7 @@ public class Asteroid : MonoBehaviour
 
     public void Explode()
     {
-        Instantiate(explosionObject, transform.position, transform.rotation); //Spawn in the broken version
+        //Instantiate(explosionObject, transform.position, transform.rotation); //Spawn in the broken version
         Destroy(gameObject); //Destroy the object to stop it getting in the way
         GameManager.Instance.ChangePoints(100);
     }

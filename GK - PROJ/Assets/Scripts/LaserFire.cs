@@ -21,6 +21,7 @@ public class LaserFire : MonoBehaviour
     public float heatTickDelay = 1f;
     private float nextHeatTickTime = 0f;
     public bool increaseHeat = true;
+    private bool firing = false;
 
 
 
@@ -47,8 +48,12 @@ public class LaserFire : MonoBehaviour
         if(!canFire)
         {
             if (Time.time > nextFireTime)
+            {
                 canFire = true;
-            heat = 0;
+                heat = 0;
+                laserLineRenderers[0].enabled = true;
+                laserLineRenderers[1].enabled = true;
+            }
         }
 
         if(increaseHeat)
@@ -56,22 +61,37 @@ public class LaserFire : MonoBehaviour
            heat = Mathf.Lerp(heat, maxHeat + 20, heatTick * Time.deltaTime);
            if(heat > maxHeat)
             {
+                if (canFire)
+                {
+                    firing = false;
+                    this.gameObject.GetComponent<PlayerAudio>().Stop("Beam");
+                    this.gameObject.GetComponent<PlayerAudio>().Play("Overcharge");
+                }
                 canFire = false;
                 nextFireTime = Time.time + overHeatCoolDown;
+                laserLineRenderers[0].enabled = false;
+                laserLineRenderers[1].enabled = false;
+                
             }
 
         }
         else
         {
-            if(!canFire)
             heat = Mathf.Lerp(heat, 0, heatTick * Time.deltaTime);
         }
         heatImage.fillAmount = heat / maxHeat;
         RaycastHit hit;
-        Vector3 RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
+        //Vector3 RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
+        Vector3 RayCastTarget =  RayCastOrignPoint.forward * laserRange;
+        
 
-        if(Input.GetButton("Fire1") && canFire)
+        if (Input.GetButton("Fire1") && canFire && !PauseMenu.GamePaused)
         {
+            //Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange, RayCastOrignPoint.forward, Color.red, 2, true);
+            if (!firing)
+                this.gameObject.GetComponent<PlayerAudio>().Play("Beam");
+            firing = true;
+
             if (Time.time > nextHeatTickTime)
             {
                 increaseHeat = true;
@@ -99,6 +119,7 @@ public class LaserFire : MonoBehaviour
             {
                 for (int i = 0; i < laserLineRenderers.Length; i++)
                 {
+                    RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
                     laserLineRenderers[i].SetPosition(0, laserFireOriginPoint[i].position);
                     laserLineRenderers[i].SetPosition(1, RayCastTarget);               
                 }
@@ -113,14 +134,16 @@ public class LaserFire : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("Fire1") && canFire)
+        if ((Input.GetButtonUp("Fire1") && canFire) || PauseMenu.GamePaused)
         {
             for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].gameObject.SetActive(false);
             }
+            firing = false;
+            this.gameObject.GetComponent<PlayerAudio>().Stop("Beam");
         }
-
+        
 
       
     }
