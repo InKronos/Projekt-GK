@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    public Image hpImage;
+    public Image shieldImage;
+
     public float maxBodyHealth = 100;
     public float maxShieldHealth = 150;
-    public Collider bodyCollider;
-    public Collider shieldCollider;
+    //public Collider bodyCollider;
+    public SphereCollider shieldCollider;
     public float rechargeTime = 5;
     public GameObject shieldSphere;
 
     private bool rechargeRequired = false;
-    private float bodyHealth;
-    private float shieldHealth;
+    public float bodyHealth;
+    public float shieldHealth;
 
     float timeTillRecharge;
     void Start()
@@ -32,14 +36,18 @@ public class PlayerHealth : MonoBehaviour
         {
             rechargeRequired = false;
             shieldHealth = maxShieldHealth;
-            shieldCollider.enabled = true;
-            bodyCollider.enabled = false;
+            shieldCollider.radius = 3;
+            //shieldCollider.enabled = true;
+            //bodyCollider.enabled = false;
             shieldSphere.SetActive(true);
         }
 
+        hpImage.fillAmount = bodyHealth / maxBodyHealth;
+        shieldImage.fillAmount = shieldHealth / maxShieldHealth;
+
     }
 
-    void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage)
     {
         if (shieldHealth > 0)
         {
@@ -55,8 +63,9 @@ public class PlayerHealth : MonoBehaviour
         {
             rechargeRequired = true;
             shieldSphere.SetActive(false);
-            shieldCollider.enabled = false;
-            bodyCollider.enabled = true;
+            shieldCollider.radius = 2;
+            //shieldCollider.enabled = false;
+            //bodyCollider.enabled = true;
             timeTillRecharge = rechargeTime;
         }
 
