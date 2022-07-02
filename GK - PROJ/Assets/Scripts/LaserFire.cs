@@ -81,11 +81,14 @@ public class LaserFire : MonoBehaviour
         }
         heatImage.fillAmount = heat / maxHeat;
         RaycastHit hit;
-        Vector3 RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
+        //Vector3 RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
+        Vector3 RayCastTarget =  RayCastOrignPoint.forward * laserRange;
+        
 
-        if(Input.GetButton("Fire1") && canFire)
+        if (Input.GetButton("Fire1") && canFire && !PauseMenu.GamePaused)
         {
-            if(!firing)
+            //Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange, RayCastOrignPoint.forward, Color.red, 2, true);
+            if (!firing)
                 this.gameObject.GetComponent<PlayerAudio>().Play("Beam");
             firing = true;
 
@@ -116,6 +119,7 @@ public class LaserFire : MonoBehaviour
             {
                 for (int i = 0; i < laserLineRenderers.Length; i++)
                 {
+                    RayCastTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition) + RayCastOrignPoint.forward * laserRange;
                     laserLineRenderers[i].SetPosition(0, laserFireOriginPoint[i].position);
                     laserLineRenderers[i].SetPosition(1, RayCastTarget);               
                 }
@@ -130,7 +134,7 @@ public class LaserFire : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("Fire1") && canFire)
+        if ((Input.GetButtonUp("Fire1") && canFire) || PauseMenu.GamePaused)
         {
             for (int i = 0; i < lasers.Length; i++)
             {

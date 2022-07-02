@@ -39,13 +39,13 @@ namespace MFlight.Demo
 
         private void UpdateGraphics(MouseFlightController controller)
         {
-            if (boresight != null)
+            if (boresight != null && !PauseMenu.GamePaused)
             {
                 boresight.position = playerCam.WorldToScreenPoint(controller.BoresightPos);
                 boresight.gameObject.SetActive(boresight.position.z > 1f);
             }
 
-            if (mousePos != null)
+            if (mousePos != null && !PauseMenu.GamePaused)
             {
                 mousePos.position = playerCam.WorldToScreenPoint(controller.MouseAimPos);
                 mousePos.gameObject.SetActive(mousePos.position.z > 1f);
