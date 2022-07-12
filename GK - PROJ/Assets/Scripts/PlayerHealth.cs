@@ -45,6 +45,10 @@ public class PlayerHealth : MonoBehaviour
         hpImage.fillAmount = bodyHealth / maxBodyHealth;
         shieldImage.fillAmount = shieldHealth / maxShieldHealth;
 
+        if (bodyHealth <= 0)
+        {
+            FindObjectOfType<PauseMenu>().GameOver();
+        }
     }
 
     public void ReceiveDamage(int damage)
