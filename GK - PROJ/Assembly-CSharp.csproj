@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Asteroid.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Sound.cs" />
+    <Compile Include="Assets\Scripts\EnemyDrone.cs" />
     <Compile Include="Assets\Scripts\PlayerAudio.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
