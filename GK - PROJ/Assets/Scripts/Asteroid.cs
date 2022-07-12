@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    public GameObject explosionObject;
+    public GameObject objectToDisable;
+    public ParticleSystem explosionObject;
 
 
     public void Explode()
     {
-        //Instantiate(explosionObject, transform.position, transform.rotation); //Spawn in the broken version
-        Destroy(gameObject); //Destroy the object to stop it getting in the way
+        explosionObject.Play();
+        objectToDisable.SetActive(false);
+        Destroy(gameObject, 2); //Destroy the object to stop it getting in the way
         GameManager.Instance.ChangePoints(100);
     }
 }
