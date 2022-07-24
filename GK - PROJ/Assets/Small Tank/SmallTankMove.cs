@@ -15,7 +15,7 @@ public class SmallTankMove  : Enemy
     {
         rb = this.GetComponent<Rigidbody>();
         bodyHealth = 100;
-        shieldHealth = 0;
+      //  shieldHealth = 0;
         target = WayPoints.points[0];
         rb.mass = 1000f;
         transform.Translate(target.position - transform.position);
@@ -91,15 +91,15 @@ public class SmallTankMove  : Enemy
 
     void ReceiveDamage(int damage)
     {
-        if (shieldHealth > 0)
+       /* if (shieldHealth > 0)
            {
                shieldHealth -= damage;
                timeTillRecharge = rechargeTime;
            }
            else
-           {
+           {*/
                bodyHealth -= damage;
-           }
+           /*}
 
            if (shieldHealth <= 0)
            {
@@ -108,7 +108,7 @@ public class SmallTankMove  : Enemy
                shieldCollider.enabled = false;
                timeTillRecharge = rechargeTime;
                Destroy(this);
-           }
+           }*/
 
     }
 }

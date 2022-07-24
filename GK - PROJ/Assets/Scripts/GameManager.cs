@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int points = 0;
     public TextMeshProUGUI scoreText;
+    public GameObject[] enemiesPrefabs;
+    public List<GameObject> enemies = new List<GameObject>();
+    int level = 1;
     public static GameManager Instance
     {
         get
@@ -27,6 +30,27 @@ public class GameManager : MonoBehaviour
         UpdateScoretext();
     }
 
+    public void Update()
+    {
+        checkLevel();
+    }
+
+    private void checkLevel()
+    {
+        if(enemies.Count.Equals(0))
+        {
+            level++;
+            SpawnEnemies();
+        }
+    }
+    private void SpawnEnemies()
+    {
+        for(int i = 0; i < level; i++)
+        {
+            enemies.Add(Instantiate(enemiesPrefabs[0], new Vector3(600, 33, 347), Quaternion.identity));
+        }
+    }
+
     private void UpdateScoretext()
     {
         scoreText.text = "SCORE: " + points.ToString();
@@ -37,4 +61,6 @@ public class GameManager : MonoBehaviour
         points += changeAmount;
         UpdateScoretext();
     }
+
+    
 }

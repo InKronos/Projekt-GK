@@ -22,6 +22,7 @@ public class LaserFire : MonoBehaviour
     private float nextHeatTickTime = 0f;
     public bool increaseHeat = true;
     private bool firing = false;
+    public float damage = 400;
 
 
 
@@ -113,6 +114,11 @@ public class LaserFire : MonoBehaviour
                 if(hit.transform.gameObject.GetComponent<Asteroid>())
                 {
                     hit.transform.gameObject.GetComponent<Asteroid>().Explode();
+                }
+
+                else if (hit.transform.gameObject.GetComponent<Turret>())
+                {
+                    hit.transform.gameObject.GetComponent<Turret>().ReceiveDamage(damage * Time.deltaTime);
                 }
             }
             else

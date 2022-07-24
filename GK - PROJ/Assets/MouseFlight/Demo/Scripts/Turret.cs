@@ -18,7 +18,7 @@ public class Turret : MonoBehaviour
 
 	public int damageOverTime = 30;
 	public float slowAmount = .5f;
-
+	public float health = 10f;
 	public LineRenderer lineRenderer;
 	
 
@@ -41,9 +41,7 @@ public class Turret : MonoBehaviour
 			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 			if (distanceToPlayer <= range)
 			{
-				Debug.Log("dupa");
 				target = player.transform;
-				other.gameObject.GetComponent<PlayerHealth>().ReceiveDamage((int)(damageOverTime * Time.deltaTime));
 			}
 			else
 			{
@@ -64,6 +62,12 @@ public class Turret : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (health <= 0)
+		{
+			GameManager.Instance.enemies.Remove(this.gameObject);
+			Destroy(gameObject);
+		}
+
 		if (target == null)
         {
 			if (lineRenderer.enabled)
@@ -75,6 +79,7 @@ public class Turret : MonoBehaviour
 
 		LockOnTarget();
 		Laser();
+		target.gameObject.GetComponent<PlayerHealth>().ReceiveDamage((int)(damageOverTime * Time.deltaTime));
 	}
 
 	void LockOnTarget()
@@ -108,4 +113,9 @@ public class Turret : MonoBehaviour
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(transform.position, range);
 	}
+
+	public void ReceiveDamage(float damage)
+    {
+		health -= damage;
+    }
 }

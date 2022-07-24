@@ -202,6 +202,7 @@ MonoBehaviour:
   turnSpeed: 50
   damageOverTime: 30
   slowAmount: 0.5
+  health: 200
   lineRenderer: {fileID: 8047123519645516335}
   firePoint: {fileID: 4960599423675438}
 --- !u!65 &8047123519645516332
