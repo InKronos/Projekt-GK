@@ -7,6 +7,8 @@ public class Turret : MonoBehaviour
 
 	private Transform target;
 
+	private PlayerHealth playerHealthTarget;
+
 	public float range = 60f;
 
 	public string playerTag = "Player";
@@ -41,6 +43,7 @@ public class Turret : MonoBehaviour
 			if (distanceToPlayer <= range)
 			{
 				target = player.transform;
+				other.gameObject.GetComponent<PlayerHealth>().ReceiveDamage((int)(damageOverTime * Time.deltaTime));
 			}
 			else
 			{
@@ -94,7 +97,7 @@ public class Turret : MonoBehaviour
 
 		lineRenderer.SetPosition(0, firePoint.position);
 		lineRenderer.SetPosition(1, target.position);
-
+		
 		Vector3 dir = firePoint.position - target.position;
 	}
 
