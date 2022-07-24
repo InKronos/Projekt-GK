@@ -2,26 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : MonoBehaviour
+public class MissileLauncher : MonoBehaviour
 {
-
 	private Transform target;
+	private Enemy targetEnemy;
 
-	private PlayerHealth playerHealthTarget;
 
 	public float range = 60f;
+
+	public GameObject bulletPrefab;
+	public float fireRate = 1f;
+	private float fireCountdown = 0f;
+
+
+	public int damageOverTime = 30;
+	public float slowAmount = .5f; 
+
 
 	public string playerTag = "Player";
 
 	public Transform partToRotate;
-	public float turnSpeed = 50f;
-
-	public int damageOverTime = 30;
-	public float slowAmount = .5f;
-
-	public LineRenderer lineRenderer;
-	
-
+	public float turnSpeed = 10f;
 
 	public Transform firePoint;
 
@@ -31,17 +32,16 @@ public class Turret : MonoBehaviour
 		//InvokeRepeating("UpdateTarget", 0f, 0.5f);
 	}
 
-	
 	void OnTriggerEnter(Collider other)
-    {
+	{
 		if (other.gameObject.tag == "Player")
-        {
+		{
 			GameObject player = GameObject.FindWithTag(playerTag);
-	
+			Debug.Log("Hello: ");
 			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+			Debug.Log(distanceToPlayer);
 			if (distanceToPlayer <= range)
 			{
-				Debug.Log("dupa");
 				target = player.transform;
 				other.gameObject.GetComponent<PlayerHealth>().ReceiveDamage((int)(damageOverTime * Time.deltaTime));
 			}
@@ -50,14 +50,14 @@ public class Turret : MonoBehaviour
 				target = null;
 			}
 		}
-    }
+	}
 
 	void OnTriggerExit(Collider other)
-    {
+	{
 		if (other.gameObject.tag == "Player")
-        {
+		{
 			target = null;
-        }
+		}
 
 	}
 
@@ -65,43 +65,40 @@ public class Turret : MonoBehaviour
 	void Update()
 	{
 		if (target == null)
-        {
-			if (lineRenderer.enabled)
-			{
-				lineRenderer.enabled = false;
-			}
+		{
 			return;
 		}
 
 		LockOnTarget();
-		Laser();
+
+		if (fireCountdown <= 0f)
+		{
+			Shoot();
+			fireCountdown = 1f / fireRate;
+		}
+
+		fireCountdown -= Time.deltaTime;
+	
+
 	}
 
 	void LockOnTarget()
-    {
-
+	{
 		Vector3 dir = target.position - transform.position;
 		Quaternion lookRotation = Quaternion.LookRotation(dir);
 		Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-		partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
+		partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 	}
 
-	void Laser()
+
+	void Shoot()
 	{
+		//GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+		//Bullet bullet = bulletGO.GetComponent<Bullet>();
 
-
-		if (!lineRenderer.enabled)
-		{
-			lineRenderer.enabled = true;
-		}
-
-		lineRenderer.SetPosition(0, firePoint.position);
-		lineRenderer.SetPosition(1, target.position);
-		
-		Vector3 dir = firePoint.position - target.position;
+		//if (bullet != null)
+			//bullet.Seek(target);
 	}
-
-
 
 	void OnDrawGizmosSelected()
 	{

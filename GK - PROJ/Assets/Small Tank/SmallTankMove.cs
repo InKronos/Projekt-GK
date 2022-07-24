@@ -32,13 +32,11 @@ public class SmallTankMove  : Enemy
 
         if (Vector3.Angle(transform.forward, dir) > 40f && !rotate && dist > 7f)
         {
-            Debug.Log("You spin me right 'round, baby, right 'round");
             angleBetween = Vector3.Angle(transform.forward, dir);
             rotate = true;
         }
         else if (Vector3.Angle(transform.forward, dir) < 30f)
         {
-            Debug.Log("Koniec");
             rotate = false;
             rotationpercent = 0f;
             rb.angularVelocity = new Vector3(0f, 0f, 0f);
@@ -46,7 +44,6 @@ public class SmallTankMove  : Enemy
 
         if (rotate)
         { 
-            Debug.Log(Vector3.Angle(transform.forward, dir));
             rb.velocity = new Vector3(0f, 0f, 0f);
             rb.angularVelocity = new Vector3(0f, 1f, 0f);
             /*Quaternion rotation = Quaternion.LookRotation(dir, Vector3.up);
@@ -94,7 +91,6 @@ public class SmallTankMove  : Enemy
 
     void ReceiveDamage(int damage)
     {
-        Debug.Log("GIT");
         if (shieldHealth > 0)
            {
                shieldHealth -= damage;
