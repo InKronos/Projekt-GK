@@ -6,17 +6,26 @@ public class SmallTankMove  : Enemy
     public Rigidbody rb;
     public float speed = 100000.0f;
     private Transform target;
+    private Transform[] targets;
+    public int targetIndex = 0;
+    int targetMaxIndex = 0;
     private int waypointId = 0;
     private float angleBetween = 0;
     private float rotationpercent = 0f;
     private bool rotate = true;
+
+    public GameObject[] objectsToDisable;
+    public ParticleSystem explosionObject;
     // Start is called before the first frame update
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();
-        bodyHealth = 100;
-      //  shieldHealth = 0;
-        target = WayPoints.points[0];
+        bodyHealth = maxBodyHealth;
+        //  shieldHealth = 0;
+        targets = WayPoints.Instance.returnPoints();
+        target = targets[targetIndex];
+        targetIndex++;
+        targetMaxIndex = targets.Length - 1;
         rb.mass = 1000f;
         transform.Translate(target.position - transform.position);
 
@@ -26,6 +35,19 @@ public class SmallTankMove  : Enemy
     // Update is called once per frame
     void Update()
     {
+        if (bodyHealth <= 0)
+        {
+            GameManager.Instance.enemies.Remove(this.gameObject);
+            GameManager.Instance.ChangePoints(100);
+
+            explosionObject.Play();
+            for (int i = 0; i < objectsToDisable.Length; i++)
+            {
+                objectsToDisable[i].SetActive(false);
+            }
+            Destroy(gameObject, 2); //Destroy the object to stop it getting in the way
+        }
+
         Vector3 dir = target.position - transform.position;
         
         float dist = Vector3.Distance(transform.position, target.position);
@@ -65,31 +87,37 @@ public class SmallTankMove  : Enemy
             
         }
 
-        
+
+
+
     }
     void GetNextWaypoint()
     {
         if (waypointId < WayPoints.points.Length)
         {
             
-            target = WayPoints.points[waypointId]; 
-            waypointId++;
+            target = WayPoints.points[targetIndex]; 
+            targetIndex++;
         }
         else if (waypointId < 2* WayPoints.points.Length)
         {
             
             target = WayPoints.points[2 * WayPoints.points.Length-waypointId-1];
-            waypointId++;
+            targetIndex++;
         }
         else
         {
 
-            waypointId = 0;
+            targetIndex = 0;
+        }
+        if (targetIndex > targetMaxIndex)
+        {
+            targetIndex = 0;
         }
 
     }
 
-    void ReceiveDamage(int damage)
+    public void ReceiveDamage(float damage)
     {
        /* if (shieldHealth > 0)
            {

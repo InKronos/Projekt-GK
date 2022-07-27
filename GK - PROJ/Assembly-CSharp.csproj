@@ -84,6 +84,7 @@
     <Compile Include="Assets\Old Hangar\Demo\Script\ThirdPersonCamera.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\MouseFlight\Scripts\MouseFlightController.cs" />
+    <Compile Include="Assets\TankMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

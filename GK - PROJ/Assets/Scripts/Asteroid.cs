@@ -13,6 +13,7 @@ public class Asteroid : MonoBehaviour
         explosionObject.Play();
         objectToDisable.SetActive(false);
         Destroy(gameObject, 2); //Destroy the object to stop it getting in the way
-        GameManager.Instance.ChangePoints(100);
+        GameManager.Instance.ChangePoints(50);
+        GameManager.Instance.enemies.Remove(this.gameObject);
     }
 }

@@ -135,8 +135,9 @@ MonoBehaviour:
   playerTag: Player
   partToRotate: {fileID: 5437746922932624071}
   turnSpeed: 50
-  damageOverTime: 30
+  damageOverTime: 150
   slowAmount: 0.5
+  health: 10
   lineRenderer: {fileID: 0}
   firePoint: {fileID: 5437746923672075994}
 --- !u!65 &3743082792899898200

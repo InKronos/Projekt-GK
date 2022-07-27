@@ -120,6 +120,11 @@ public class LaserFire : MonoBehaviour
                 {
                     hit.transform.gameObject.GetComponent<Turret>().ReceiveDamage(damage * Time.deltaTime);
                 }
+
+                else if (hit.transform.gameObject.GetComponent<SmallTankMove>())
+                {
+                    hit.transform.gameObject.GetComponent<SmallTankMove>().ReceiveDamage(damage * Time.deltaTime);
+                }
             }
             else
             {

@@ -20,8 +20,9 @@ public class Turret : MonoBehaviour
 	public float slowAmount = .5f;
 	public float health = 10f;
 	public LineRenderer lineRenderer;
-	
 
+	public GameObject[] objectsToDisable;
+	public ParticleSystem explosionObject;
 
 	public Transform firePoint;
 
@@ -50,7 +51,25 @@ public class Turret : MonoBehaviour
 		}
     }
 
-	void OnTriggerExit(Collider other)
+    private void OnTriggerStay(Collider other)
+    {
+		if (other.gameObject.tag == "Player")
+		{
+			GameObject player = GameObject.FindWithTag(playerTag);
+
+			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+			if (distanceToPlayer <= range)
+			{
+				target = player.transform;
+			}
+			else
+			{
+				target = null;
+			}
+		}
+	}
+
+    void OnTriggerExit(Collider other)
     {
 		if (other.gameObject.tag == "Player")
         {
@@ -65,7 +84,14 @@ public class Turret : MonoBehaviour
 		if (health <= 0)
 		{
 			GameManager.Instance.enemies.Remove(this.gameObject);
-			Destroy(gameObject);
+			GameManager.Instance.ChangePoints(100);
+
+			explosionObject.Play();
+			for (int i = 0; i < objectsToDisable.Length; i++)
+			{
+				objectsToDisable[i].SetActive(false);
+			}
+			Destroy(gameObject, 2); //Destroy the object to stop it getting in the way
 		}
 
 		if (target == null)
